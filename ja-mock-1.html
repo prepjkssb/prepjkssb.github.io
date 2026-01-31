@@ -1,40 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>JA Mock Test – 1 | PrepJKSSB</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-body{font-family:Arial;margin:0;background:#f4f6f8}
-header{background:#0d6efd;color:#fff;padding:15px;text-align:center}
-.timer{font-size:18px;font-weight:bold}
-.container{padding:15px}
-.question{font-size:18px;margin-bottom:10px}
-.options label{display:block;padding:10px;margin:8px 0;background:#fff;border-radius:5px}
-.nav{text-align:center;margin-bottom:20px}
-button{padding:10px 15px;font-size:16px;margin:5px}
-</style>
-</head>
+let totalSeconds = 80 * 60; // 80 minutes for JA
 
-<body>
+setInterval(() => {
+  let m = Math.floor(totalSeconds / 60);
+  let s = totalSeconds % 60;
 
-<header>
-<h2>JA Mock Test – 1</h2>
-<div class="timer" id="timer">Time Left: 02:00:00</div>
-</header>
+  document.getElementById("timer").innerHTML =
+    "Time Left: " +
+    String(m).padStart(2,'0') + ":" +
+    String(s).padStart(2,'0');
 
-<div class="container">
-<div class="question" id="qtext"></div>
-<div class="options" id="options"></div>
-</div>
-
-<div class="nav">
-<button onclick="prevQ()">Previous</button>
-<button onclick="nextQ()">Next</button>
-<button onclick="finishTest()">Finish Test</button>
-</div>
-
+  if (totalSeconds <= 0) finishTest();
+  totalSeconds--;
+}, 1000);
 <script>
 let questions=[
  {q:"Full form of CPU?",o:["Central Process Unit","Central Processing Unit","Computer Personal Unit","Control Process Unit"],a:1},
