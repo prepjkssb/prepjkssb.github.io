@@ -1,267 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JKSSB JA Mock Set 2 </title>
-    <style>
-        :root { --navy: #0f172a; --blue: #2563eb; --gold: #f59e0b; --gray: #f8fafc; --text: #1e293b; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--gray); margin: 0; padding: 0; color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        header { background: var(--navy); color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 100; }
-        .timer { font-family: monospace; font-size: 1.1rem; font-weight: bold; color: var(--gold); background: #000; padding: 4px 10px; border-radius: 6px; }
-        .layout { flex: 1; display: flex; overflow: hidden; }
-        .quiz-container { flex: 3; padding: 20px; overflow-y: auto; background: white; }
-        .sidebar { flex: 1; background: #fff; border-left: 1px solid #e2e8f0; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; }
-        .q-header { font-size: 0.7rem; font-weight: 900; color: var(--blue); text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px; }
-        .q-text { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; line-height: 1.4; color: var(--navy); }
-        .statement-box { background: #f1f5f9; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid #64748b; font-size: 0.95rem; line-height: 1.5; color: #334155; }
-        .option { display: block; width: 100%; padding: 14px; margin-bottom: 10px; border: 2px solid #f1f5f9; border-radius: 12px; background: #fff; text-align: left; cursor: pointer; transition: 0.2s; font-size: 1rem; font-weight: 500; }
-        .option:hover { background: #f8fafc; border-color: #cbd5e1; }
-        .option.selected { border-color: var(--blue); background: #eff6ff; color: var(--blue); }
-        .palette-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 20px; }
-        .p-btn { aspect-ratio: 1; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.75rem; font-weight: bold; background: #fff; cursor: pointer; }
-        .p-btn.answered { background: #10b981; color: white; border-color: #10b981; }
-        .p-btn.marked { background: var(--gold); color: white; border-color: var(--gold); }
-        .p-btn.current { border: 2px solid var(--navy); outline: 2px solid var(--blue); transform: scale(1.05); }
-        footer { height: 70px; background: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; flex-shrink: 0; }
-        .btn { padding: 10px 20px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-        .btn-prev { background: #94a3b8; color: white; }
-        .btn-mark { background: var(--gold); color: white; }
-        .btn-next { background: var(--blue); color: white; }
-        #result-screen { display: none; position: fixed; inset: 0; background: white; z-index: 1000; flex-direction: column; align-items: center; justify-content: center; padding: 30px; overflow-y: auto; }
-        .score-circle { width: 140px; height: 140px; border-radius: 50%; border: 8px solid var(--blue); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 900; color: var(--navy); margin: 20px 0; }
-        .review-box { width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto; border: 1px solid #eee; padding: 10px; text-align: left; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JKSSB JA Mock Set 2</title>
+
+<style>
+:root{
+  --navy:#0f172a;
+  --blue:#2563eb;
+  --gold:#f59e0b;
+  --gray:#f8fafc;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Arial;
+  background:var(--gray);
+  color:#111;
+}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:300;
+  background:var(--navy);
+  color:#fff;
+  padding:12px 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.timer{
+  background:#000;
+  color:var(--gold);
+  padding:5px 10px;
+  border-radius:6px;
+  font-weight:bold;
+}
+
+/* MAIN */
+.quiz-container{
+  padding:15px;
+  background:#fff;
+}
+
+.q-header{
+  font-size:12px;
+  font-weight:900;
+  color:var(--blue);
+  text-transform:uppercase;
+}
+
+.q-text{
+  font-size:1.05rem;
+  font-weight:700;
+  margin:10px 0;
+}
+
+.statement-box{
+  background:#f1f5f9;
+  padding:12px;
+  border-left:5px solid #64748b;
+  border-radius:6px;
+  margin-bottom:10px;
+}
+
+.option{
+  width:100%;
+  padding:14px;
+  margin-bottom:10px;
+  border-radius:10px;
+  border:2px solid #e5e7eb;
+  background:#fff;
+  font-size:1rem;
+  cursor:pointer;
+}
+
+.option.selected{
+  background:#eff6ff;
+  border-color:var(--blue);
+  color:var(--blue);
+}
+
+/* BOTTOM NAVIGATOR */
+#bottom-navigator{
+  position:sticky;
+  bottom:70px;
+  background:#fff;
+  border-top:1px solid #e5e7eb;
+  padding:10px;
+}
+
+.palette-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+}
+
+.p-btn{
+  aspect-ratio:1;
+  border-radius:6px;
+  border:1px solid #ccc;
+  background:#fff;
+  font-weight:bold;
+}
+
+.p-btn.answered{background:#10b981;color:#fff}
+.p-btn.marked{background:var(--gold);color:#fff}
+.p-btn.current{outline:2px solid var(--blue)}
+
+/* FOOTER */
+footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:1px solid #e5e7eb;
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  z-index:400;
+}
+
+.btn{
+  flex:1;
+  margin:0 5px;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  color:#fff;
+}
+
+.btn-prev{background:#94a3b8}
+.btn-mark{background:var(--gold)}
+.btn-next{background:var(--blue)}
+
+/* RESULT */
+#result-screen{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#fff;
+  z-index:1000;
+  padding:20px;
+  overflow:auto;
+}
+</style>
 </head>
+
 <body>
+
 <header>
-    <div style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase;">SET 9: ELITE (SYLLABUS STRICT)</div>
-    <div class="timer" id="timer">80:00</div>
+  <div style="font-weight:800;font-size:12px">SET 2</div>
+  <div class="timer" id="timer">80:00</div>
 </header>
-<div class="layout">
-    <div class="quiz-container">
-        <div id="q-content">
-            <div id="section-info" class="q-header">Section</div>
-            <div id="q-number" style="font-size: 11px; color: #94a3b8; font-weight: bold; margin-bottom: 10px;">QUESTION 1</div>
-            <div id="q-text" class="q-text">Loading Elite Content...</div>
-            <div id="statement-area"></div>
-            <div id="options-list"></div>
-        </div>
-    </div>
-    <div class="sidebar">
-        <div style="font-size: 0.7rem; font-weight: 900; margin-bottom: 10px; color: #94a3b8; text-transform: uppercase;">Navigator</div>
-        <div class="palette-grid" id="palette-grid"></div>
-        <div style="font-size: 10px; color: #94a3b8; line-height: 1.5;"
-    </div>
+
+<div class="quiz-container">
+  <div id="section-info" class="q-header"></div>
+  <div id="q-number" style="font-size:11px;color:#666"></div>
+  <div id="q-text" class="q-text"></div>
+  <div id="statement-area"></div>
+  <div id="options-list"></div>
 </div>
+
+<div id="bottom-navigator">
+  <div style="font-size:12px;font-weight:900;margin-bottom:5px">Question Navigator</div>
+  <div class="palette-grid" id="palette-grid"></div>
+</div>
+
 <footer>
-    <button class="btn btn-prev" onclick="nav(-1)">Prev</button>
-    <button class="btn btn-mark" onclick="mark()">Mark</button>
-    <button class="btn btn-next" id="next-btn" onclick="nav(1)">Next</button>
+  <button class="btn btn-prev" onclick="nav(-1)">Prev</button>
+  <button class="btn btn-mark" onclick="mark()">Mark</button>
+  <button class="btn btn-next" onclick="nav(1)">Next</button>
 </footer>
+
 <div id="result-screen">
-    <h2 style="margin:0; color: var(--navy);">Test Completed</h2>
-    <div class="score-circle" id="final-score">0</div>
-    <div id="feedback" style="font-weight: bold; margin-bottom: 20px; color: #64748b; text-align: center;"></div>
-    <div class="review-box" id="review-list"></div>
-    <button class="btn btn-next" onclick="location.reload()" style="width:100%; max-width:400px; padding:15px; margin-top:20px;">Restart Test</button>
+  <h2>Test Completed</h2>
+  <h1 id="final-score"></h1>
+  <div id="review-list"></div>
+  <button class="btn btn-next" onclick="location.reload()">Restart</button>
 </div>
+
 <script>
-    const questions = [
-        // --- ENGLISH: (1-20) ---
-        { s: "English", q: "Identify the part with error: 'Scarcely had the party (A) / begun (B) / than the uninvited (C) / guests arrived (D).'", o: ["A", "B", "C", "D"], a: 2, e: "Scarcely is followed by 'when', not 'than'." },
-        { s: "English", q: "Which of the following is in the Subjunctive Mood?", o: ["I wish I was there.", "If I were you, I would go.", "He talks as if he knows everything.", "May you live long!"], a: 1, e: "'If I were you' is the standard subjunctive for imaginary conditions." },
-        { s: "English", q: "Inversion check: Choose the correct sentence.", o: ["Only by working hard you can pass.", "Only by working hard can you pass.", "By working hard only can you pass.", "You can pass only by working hard."], a: 1, e: "Sentence starting with 'Only' requires auxiliary before subject." },
-        { s: "English", q: "Choose the correct phrase: 'He is addicted to ___.'", o: ["smoke", "smoking", "be smoking", "have smoked"], a: 1, e: "'Addicted to' takes a gerund (-ing)." },
-        { s: "English", q: "Antonym of 'SUPERCILIOUS':", o: ["Arrogant", "Haughty", "Humble", "Disdainful"], a: 2, e: "Supercilious means arrogant." },
-        { s: "English", q: "Identify the Figure of Speech: 'The tea was as hot as the sun.'", o: ["Metaphor", "Simile", "Hyperbole", "Personification"], a: 1 },
-        { s: "English", q: "Correct the sentence: 'One of the student who are playing is my brother.'", o: ["One of the students who is playing", "One of the students who are playing", "One of the student who is playing", "No correction required"], a: 1, e: "Relative pronoun 'who' refers to plural 'students', hence 'are'." },
-        { s: "English", q: "Idiom: 'To keep the wolf from the door' means:", o: ["To guard the house", "To avoid starvation", "To be very brave", "To hunt animals"], a: 1 },
-        { s: "English", q: "Identify the clause: 'I will go when I am ready.'", o: ["Noun Clause", "Adjective Clause", "Adverb Clause of Time", "Adverb Clause of Reason"], a: 2 },
-        { s: "English", q: "Phrasal Verb: 'The plane ___ 10 minutes late.'", o: ["took on", "took off", "took up", "took out"], a: 1 },
-        { s: "English", q: "Narration: He said to me, 'Don't go there.'", o: ["He told me not to go there.", "He forbade me to go there.", "He said I shouldn't go there.", "Both A and B"], a: 3 },
-        { s: "English", q: "Correct article: 'He is ___ H.E. (His Excellency).'", o: ["a", "an", "the", "no article"], a: 1, e: "H.E. is pronounced starting with 'Aitch' (vowel sound)." },
-        { s: "English", q: "Synonym of 'PERSPICACIOUS':", o: ["Dull", "Shrewd", "Cloudy", "Ignorant"], a: 1, e: "Means having a ready insight." },
-        { s: "English", q: "Spelling: Choose correct one:", o: ["Manoeuvre", "Manuever", "Maneuvre", "Manoeuvree"], a: 0 },
-        { s: "English", q: "Voice: 'A stone struck me on the head.'", o: ["I was struck on the head by a stone.", "The head was struck by me.", "Struck was I by a stone.", "I am struck by a stone."], a: 0 },
-        { s: "English", q: "Antonym of 'EPHEMERAL':", o: ["Short-lived", "Eternal", "Frail", "Momentary"], a: 1 },
-        { s: "English", q: "One word: 'One who is recoverning from illness.'", o: ["Convalescent", "Optimist", "Invalid", "Atheist"], a: 0 },
-        { s: "English", q: "Correct use of 'Lest': 'Run fast lest you ___ the train.'", o: ["will miss", "might miss", "should miss", "miss"], a: 2, e: "Lest is followed by 'should'." },
-        { s: "English", q: "Collective noun for 'Starlings':", o: ["A flock", "A murmuration", "A pride", "A pack"], a: 1 },
-        { s: "English", q: "Choose correct punctuation:", o: ["Wait for me! he shouted.", "Wait for me? he shouted.", "\"Wait for me!\" he shouted.", "Wait for me, he shouted."], a: 2 },
+const questions=[
+ {s:"English",q:"Shortcut key for Copy?",o:["Ctrl+X","Ctrl+C","Ctrl+V","Ctrl+Z"],a:1},
+ {s:"English",q:"Antonym of EPHEMERAL?",o:["Permanent","Short","Tiny","Brief"],a:0}
+];
 
-        // --- JK GK:  (21-40) - NO 2019 ACT ---
-        { s: "JK GK", q: "Consider the following statements about River Jhelum:", 
-          t: "1. It originates from Verinag Spring at the foot of Pir Panjal.\n2. It flows through Srinagar and into Wular Lake.\n3. It enters Pakistan through a gorge at Baramulla.", 
-          o: ["Only 1 and 2", "Only 2 and 3", "Only 1 and 3", "All 1, 2, and 3"], a: 3 },
-        { s: "JK GK", q: "Regarding Saffron cultivation in J&K, identify the CORRECT statement:", 
-          t: "I. It is primarily grown in the Karewas of Pampore.\nII. It requires a specific climate of the Jammu plains.\nIII. J&K is the only producer of Saffron in India.", 
-          o: ["Only I", "Only II", "Only I and III", "All are correct"], a: 2 },
-        { s: "JK GK", q: "Match the Temple with the Dynasty/Ruler:", 
-          t: "A. Martand Sun Temple - Lalitaditya (Karkota)\nB. Avantiswami Temple - Avantivarman (Utpala)\nC. Shankaracharya Temple - Jaluka (Maurya)", 
-          o: ["Only A and B correctly matched", "Only B and C correctly matched", "Only A and C correctly matched", "All A, B, and C correctly matched"], a: 3 },
-        { s: "JK GK", q: "Consider the following statements about J&K Climate:", 
-          t: "1. Jammu has a Sub-tropical climate.\n2. Kashmir has a Continental climate.\n3. Ladakh has a Cold Desert climate.", 
-          o: ["Only 1", "Only 2", "Only 3", "All 1, 2 and 3"], a: 3 },
-        { s: "JK GK", q: "Arrange the following rulers of Kashmir in CHRONOLOGICAL order:", 
-          t: "1. Lalitaditya Muktapida\n2. Zain-ul-Abidin\n3. Gulab Singh\n4. Shah Mir", 
-          o: ["1, 4, 2, 3", "1, 2, 4, 3", "4, 1, 2, 3", "1, 4, 3, 2"], a: 0, e: "Karkota (Ancient) > Shah Mir (Medieval) > Budshah (Later Medieval) > Dogra (Modern)." },
-        { s: "JK GK", q: "Which soil is locally known as 'Gurtu' in the Kashmir valley?", o: ["Clayey soil", "Loamy soil", "Sandy soil", "Peaty soil"], a: 0 },
-        { s: "JK GK", q: "The 'Durbar Move' was started in 1872 by:", o: ["Maharaja Gulab Singh", "Maharaja Ranbir Singh", "Maharaja Pratap Singh", "Maharaja Hari Singh"], a: 1 },
-        { s: "JK GK", q: "The Treaty of Amritsar (1846) was signed between the British and whom?", o: ["Maharaja Hari Singh", "Maharaja Gulab Singh", "Sheikh Abdullah", "Ranjit Singh"], a: 1 },
-        { s: "JK GK", q: "Which mountain pass connects the Doda region with the Chamba region of HP?", o: ["Banihal", "Chattergala", "Zojila", "Sinthan Top"], a: 1 },
-        { s: "JK GK", q: "The 'Deepest Lake' in the Kashmir valley is:", o: ["Wular", "Dal", "Manasbal", "Gangabal"], a: 2 },
-        { s: "JK GK", q: "Who is known as the 'Akbar of Kashmir'?", o: ["Shah Mir", "Zain-ul-Abidin", "Shihab-ud-din", "Yousuf Shah Chak"], a: 1 },
-        { s: "JK GK", q: "The first Muslim ruler of Kashmir was:", o: ["Zain-ul-Abidin", "Shah Mir", "Akbar", "Lalitaditya"], a: 1 },
-        { s: "JK GK", q: "Which project is known as the 'Lifeline of Jammu'?", o: ["Ranbir Canal", "Ravi Tawi Project", "Baglihar", "Ujh"], a: 0 },
-        { s: "JK GK", q: "The ancient name of River Chenab is:", o: ["Asikni", "Vitasta", "Purushni", "Vipasha"], a: 0 },
-        { s: "JK GK", q: "Burzahom, the Neolithic site, is located in which district?", o: ["Srinagar", "Budgam", "Baramulla", "Anantnag"], a: 0 },
-        { s: "JK GK", q: "Which peak is the highest in the J&K Union Territory?", o: ["K2", "Nun Peak", "Nanga Parbat", "Harmukh"], a: 1, e: "Nun (7135m) is the highest in current J&K UT; K2 is in POK." },
-        { s: "JK GK", q: "The state animal of J&K UT is:", o: ["Snow Leopard", "Hangul", "Markhor", "Black Bear"], a: 1 },
-        { s: "JK GK", q: "Who built the famous Shalimar Bagh in Srinagar?", o: ["Akbar", "Jahangir", "Shah Jahan", "Aurangzeb"], a: 1 },
-        { s: "JK GK", q: "Total districts in J&K UT are:", o: ["22", "20", "28", "18"], a: 1 },
-        { s: "JK GK", q: "Which pass is known as the 'Gateway to Ladakh'?", o: ["Banihal", "Zojila", "Fotu La", "Sinthan Top"], a: 1 },
+let current=0,answers={},marked={},timeLeft=80*60;
 
-        // --- REASONING & MATH:(41-60) ---
-        { s: "Reasoning", q: "Series: 2, 12, 36, 80, 150, ?", o: ["252", "210", "180", "240"], a: 0, e: "Pattern: n^3 + n^2 (1^3+1^2=2, 2^3+2^2=12, 3^3+3^2=36, 4^3+4^2=80, 5^3+5^2=150, 6^3+6^2=252)." },
-        { s: "Reasoning", q: "If 'KASHMIR' is '81-19-8-13-9-18', then 'JAMMU' is:", o: ["10-1-13-13-21", "17-26-14-14-6", "11-2-14-14-22", "9-25-12-12-20"], a: 1, e: "Reverse alphabetical positions (A=26, Z=1)." },
-        { s: "Reasoning", q: "Find the odd one out: 343, 512, 729, 1000, 1321", o: ["343", "729", "1321", "512"], a: 2, e: "All are perfect cubes except 1321 (11^3=1331)." },
-        { s: "Reasoning", q: "A man faces North, turns 45 deg CW, then 135 deg ACW, then 180 deg CW. Facing?", o: ["North", "South", "East", "West"], a: 2, e: "Net turn: +45 - 135 + 180 = +90 (East)." },
-        { s: "Reasoning", q: "If '+' means 'x', '-' means '+', 'x' means '/' and '/' means '-', then: 15 + 10 x 2 - 10 / 5 = ?", o: ["75", "80", "60", "70"], a: 1, e: "15*10/2 + 10 - 5 = 75 + 10 - 5 = 80." },
-        { s: "Reasoning", q: "Pointing to a man, a lady says: 'His mother is the only daughter of my mother.' Relationship?", o: ["Brother", "Son", "Father", "Husband"], a: 1 },
-        { s: "Reasoning", q: "Find missing: 1, 2, 6, 15, 31, ?", o: ["50", "56", "62", "48"], a: 1, e: "Differences: +1, +4, +9, +16, +25 (Squares)." },
-        { s: "Reasoning", q: "How many squares in a 5x5 grid?", o: ["25", "50", "55", "60"], a: 2, e: "1^2+2^2+3^2+4^2+5^2 = 55." },
-        { s: "Reasoning", q: "In a code, 'PEN' is '35' and 'DOG' is '26'. What is 'CAT'?", o: ["24", "26", "22", "28"], a: 0, e: "Sum of positions: C(3)+A(1)+T(20) = 24." },
-        { s: "Reasoning", q: "A train 150m long crosses a 250m bridge at 72km/hr. Time?", o: ["15s", "20s", "25s", "30s"], a: 1, e: "400m / 20m/s = 20s." },
-        { s: "Reasoning", q: "Statement: Some A are B. All B are C. Conclusion: Some A are C.", o: ["True", "False", "Maybe", "None"], a: 0 },
-        { s: "Reasoning", q: "Angle at 10:25?", o: ["162.5", "180", "192.5", "150"], a: 0 },
-        { s: "Reasoning", q: "Average of first 10 prime numbers:", o: ["10.5", "11.6", "12.9", "13.2"], a: 2, e: "2,3,5,7,11,13,17,19,23,29 Sum=129." },
-        { s: "Reasoning", q: "Series: AZ, CX, EV, ?", o: ["FU", "GT", "HS", "IR"], a: 1, e: "+2 pattern with reverse letters." },
-        { s: "Reasoning", q: "If A:B = 3:4 and B:C = 8:9, find A:C:", o: ["3:9", "2:3", "1:2", "3:4"], a: 1 },
-        { s: "Reasoning", q: "If 1st Jan 2004 was Thu, what was 1st Jan 2005?", o: ["Fri", "Sat", "Sun", "Mon"], a: 1, e: "Leap year: +2 days." },
-        { s: "Reasoning", q: "A can do work in 12d, B in 15d. A worked 4d then left. B alone will finish in:", o: ["8d", "10d", "12d", "5d"], a: 1 },
-        { s: "Reasoning", q: "Find odd: 3, 5, 7, 9, 11", o: ["3", "7", "9", "11"], a: 2, e: "9 is composite." },
-        { s: "Reasoning", q: "Speed: 100m in 10s. km/hr?", o: ["10", "36", "72", "54"], a: 1 },
-        { s: "Reasoning", q: "Relation: P is father of Q. Q is son of R. P to R?", o: ["Brother", "Husband", "Father", "Uncle"], a: 1 },
+function renderPalette(){
+  const g=document.getElementById("palette-grid");
+  g.innerHTML="";
+  questions.forEach((_,i)=>{
+    const b=document.createElement("button");
+    b.className="p-btn";
+    b.innerText=i+1;
+    b.onclick=()=>jump(i);
+    b.id="p"+i;
+    g.appendChild(b);
+  });
+}
 
-        // --- COMPUTERS:(61-80) ---
-        { s: "Computers", q: "Which OSI layer handles 'Framing' and physical addressing (MAC)?", o: ["Physical", "Network", "Data Link", "Transport"], a: 2 },
-        { s: "Computers", q: "In MS Excel 2019, the shortcut 'Ctrl + 2' applies:", o: ["Italic", "Bold", "Underline", "Formula"], a: 1, e: "Ctrl + 2 is the legacy shortcut for Bold." },
-        { s: "Computers", q: "Which shortcut toggles Gridlines in MS PowerPoint 2019?", o: ["Alt + F9", "Ctrl + F9", "Shift + F9", "Tab + F9"], a: 2 },
-        { s: "Computers", q: "The CPU register that holds the data for arithmetic/logic operations is:", o: ["Accumulator", "Program Counter", "Stack Pointer", "IR"], a: 0 },
-        { s: "Computers", q: "Which protocol is used for dynamically assigning IP addresses?", o: ["DNS", "DHCP", "FTP", "SMTP"], a: 1 },
-        { s: "Computers", q: "In MS Word 2019, '.docm' extension is specifically for:", o: ["Template", "Macro-enabled document", "Image document", "None"], a: 1 },
-        { s: "Computers", q: "What is the full form of OSS in software distribution?", o: ["Open Source Software", "Original Source", "Open System", "Original Search"], a: 0 },
-        { s: "Computers", q: "Which memory type is volatile?", o: ["ROM", "HDD", "RAM", "Registers"], a: 2 },
-        { s: "Computers", q: "Ctrl + Shift + D in Word applies:", o: ["Dashed line", "Double underline", "Dot line", "None"], a: 1 },
-        { s: "Computers", q: "Which register stores the address of the next instruction?", o: ["Accumulator", "Program Counter", "Stack Pointer", "IR"], a: 1 },
-        { s: "Computers", q: "1 Petabyte (PB) equals:", o: ["1024 GB", "1024 TB", "1024 MB", "1024 KB"], a: 1 },
-        { s: "Computers", q: "WWW invented by:", o: ["Bill Gates", "Tim Berners-Lee", "Steve Jobs", "Cerf"], a: 1 },
-        { s: "Computers", q: "Which logic gate outputs 1 only when both inputs are different?", o: ["AND", "OR", "XOR", "NAND"], a: 2 },
-        { s: "Computers", q: "OSI Presentation layer handles:", o: ["Routing", "Encryption", "User Interface", "Framing"], a: 1 },
-        { s: "Computers", q: "USB stands for:", o: ["Universal Serial Bus", "Unique Serial Bus", "United Bus", "Uniform Bus"], a: 0 },
-        { s: "Computers", q: "First gen computers used:", o: ["Transistors", "Vacuum Tubes", "ICs", "Microchips"], a: 1 },
-        { s: "Computers", q: "SQL used for:", o: ["Web Design", "Database Management", "Networking", "Hardware"], a: 1 },
-        { s: "Computers", q: "Speed of Processor measured in:", o: ["Bytes", "Hertz (GHz)", "Baud", "Bits"], a: 1 },
-        { s: "Computers", q: "Which key to refresh browser?", o: ["F1", "F5", "F12", "F7"], a: 1 },
-        { s: "Computers", q: "Primary Bold shortcut (Ctrl+B) is NOT available in a cell; alternative?", o: ["Ctrl+1", "Ctrl+2", "Ctrl+3", "Ctrl+4"], a: 1 }
-    ];
+function loadQuestion(){
+  const q=questions[current];
+  section-info.innerText=q.s;
+  q-number.innerText=`QUESTION ${current+1} OF ${questions.length}`;
+  q-text.innerText=q.q;
+  statement-area.innerHTML="";
+  options-list.innerHTML="";
+  q.o.forEach((op,i)=>{
+    const b=document.createElement("button");
+    b.className="option"+(answers[current]==i?" selected":"");
+    b.innerText=op;
+    b.onclick=()=>{answers[current]=i;loadQuestion();updatePalette();}
+    options-list.appendChild(b);
+  });
+  updatePalette();
+}
 
-    let current = 0;
-    let answers = {};
-    let marked = {};
-    let timeLeft = 80 * 60;
-    let timerId;
+function updatePalette(){
+  questions.forEach((_,i)=>{
+    const b=document.getElementById("p"+i);
+    b.className="p-btn";
+    if(i===current)b.classList.add("current");
+    if(marked[i])b.classList.add("marked");
+    if(answers[i]!=null)b.classList.add("answered");
+  });
+}
 
-    function renderPalette() {
-        const grid = document.getElementById('palette-grid');
-        grid.innerHTML = '';
-        questions.forEach((_, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'p-btn';
-            btn.innerText = i + 1;
-            btn.id = 'p-' + i;
-            btn.onclick = () => jump(i);
-            grid.appendChild(btn);
-        });
-        updatePalette() {
-        questions.forEach((_, i) => {
-            const btn = document.getElementById('p-' + i);
-            btn.className = 'p-btn';
-            if (i === current) btn.classList.add('current');
-            if (marked[i]) btn.classList.add('marked');
-            else if (answers[i] !== undefined) btn.classList.add('answered');
-        });
-    }
+function nav(d){
+  if(d===1 && current===questions.length-1){submit();return;}
+  current=Math.max(0,Math.min(questions.length-1,current+d));
+  loadQuestion();
+}
 
-    function loadQuestion() {
-        const q = questions[current];
-        document.getElementById('section-info').innerText = q.s + " | Elite Level";
-        document.getElementById('q-number').innerText = "QUESTION " + (current + 1) + " OF 80";
-        document.getElementById('q-text').innerText = q.q;
-        
-        const extra = document.getElementById('statement-area');
-        extra.innerHTML = q.t ? `<div class="statement-box">${q.t.replace(/\n/g, '<br>')}</div>` : '';
+function jump(i){current=i;loadQuestion();}
+function mark(){marked[current]=!marked[current];updatePalette();}
 
-        const list = document.getElementById('options-list');
-        list.innerHTML = '';
-        q.o.forEach((opt, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'option' + (answers[current] === i ? ' selected' : '');
-            btn.innerHTML = `<span style="font-weight:bold;margin-right:10px;">${String.fromCharCode(65+i)}.</span> ${opt}`;
-            btn.onclick = () => select(i);
-            list.appendChild(btn);
-        });
-        updatePalette();
-    }
+setInterval(()=>{
+  timeLeft--;
+  const m=Math.floor(timeLeft/60),s=timeLeft%60;
+  timer.innerText=`${m}:${s<10?"0"+s:s}`;
+  if(timeLeft<=0)submit();
+},1000);
 
-    function select(i) {
-        answers[current] = i;
-        loadQuestion();
-        updatePalette();
-    }
+function submit(){
+  let score=0;
+  questions.forEach((q,i)=>{if(answers[i]===q.a)score++;});
+  document.getElementById("final-score").innerText=`Score: ${score}/${questions.length}`;
+  document.getElementById("result-screen").style.display="block";
+}
 
-    function nav(d) {
-        if (d === 1 && current === 79) { submit(); return; }
-        current = Math.max(0, Math.min(79, current + d));
-        loadQuestion();
-    }
-
-    function jump(i) { current = i; loadQuestion(); }
-    function mark() { marked[current] = !marked[current]; updatePalette(); }
-
-    function startTimer() {
-        timerId = setInterval(() => {
-            timeLeft--;
-            if (timeLeft <= 0) submit();
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' + s : s}`;
-        }, 1000);
-    }
-
-    function submit() {
-        clearInterval(timerId);
-        let score = 0;
-        let reviewHTML = "";
-        questions.forEach((q, i) => {
-            const isCorrect = answers[i] === q.a;
-            if (isCorrect) score++;
-            reviewHTML += `<div style="margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
-                <strong>Q${i+1}:</strong> ${q.q}<br>
-                <span style="color:${isCorrect ? 'green' : 'red'}">Your: ${answers[i] !== undefined ? q.o[answers[i]] : 'N/A'}</span> | 
-                <span style="color:green">Correct: ${q.o[q.a]}</span>
-            </div>`;
-        });
-        document.getElementById('result-screen').style.display = 'flex';
-        document.getElementById('final-score').innerText = score;
-        document.getElementById('review-list').innerHTML = reviewHTML;
-        document.getElementById('feedback').innerText = score >= 65 ? "Exceptional Mastery! Exam Ready." : (score >= 45 ? "Strong Score. Refine Technicals." : "Rigorous Study Required.");
-    }
-
-    window.onload = () => { renderPalette(); loadQuestion(); startTimer(); };
+renderPalette();
+loadQuestion();
 </script>
 
 </body>
 </html>
+        document.getElementById('result-screen').style.display = 'flex';
+        document.
