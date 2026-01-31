@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Section Quiz</title>
 
+<style>
+body{font-family:system-ui;margin:0;background:#f8fafc}
+header{background:#2563eb;color:#fff;padding:15px;text-align:center}
+.question{padding:15px;font-weight:600}
+.option{display:block;margin:10px;padding:12px;border:1px solid #ddd;border-radius:8px;background:#fff}
+.option:hover{background:#eef}
+button{padding:12px 20px;margin:15px;border:none;background:#2563eb;color:#fff;border-radius:8px;font-weight:bold}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>English Section Quiz</h2>
+<p>10 Questions • No Timer</p>
+</header>
+
+<div class="question" id="q"></div>
+<div id="opts"></div>
+<button onclick="next()">Next</button>
+
+<script>
+const qs=[
+ {q:"Synonym of EPHEMERAL?",o:["Permanent","Short-lived","Big","Fast"],a:1},
+ {q:"Correct sentence:",o:["He go to school","He goes to school","He gone school","He going school"],a:1}
+];
+
+let i=0,score=0;
+
+function load(){
+ q.innerText=`Q${i+1}. ${qs[i].q}`;
+ opts.innerHTML="";
+ qs[i].o.forEach((x,j)=>{
+  const b=document.createElement("div");
+  b.className="option";
+  b.innerText=x;
+  b.onclick=()=>{ if(j===qs[i].a)score++; next(); }
+  opts.appendChild(b);
+ });
+}
+
+function next(){
+ i++;
+ if(i>=qs.length){
+  document.body.innerHTML=`<h2 style="text-align:center">Score: ${score}/${qs.length}</h2>`;
+  return;
+ }
+ load();
+}
+
+load();
+</script>
+
+</body>
+</html>
