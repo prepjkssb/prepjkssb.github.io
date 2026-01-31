@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JA Mock Test – 1 | PrepJKSSB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{font-family:Arial;margin:0;background:#f4f6f8}
+header{background:#0d6efd;color:#fff;padding:15px;text-align:center}
+.timer{font-size:18px;font-weight:bold}
+.container{padding:15px}
+.question{font-size:18px;margin-bottom:10px}
+.options label{display:block;padding:10px;margin:8px 0;background:#fff;border-radius:5px}
+.nav{text-align:center;margin-bottom:20px}
+button{padding:10px 15px;font-size:16px;margin:5px}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>JA Mock Test – 1</h2>
+<div class="timer" id="timer">Time Left: 02:00:00</div>
+</header>
+
+<div class="container">
+<div class="question" id="qtext"></div>
+<div class="options" id="options"></div>
+</div>
+
+<div class="nav">
+<button onclick="prevQ()">Previous</button>
+<button onclick="nextQ()">Next</button>
+<button onclick="finishTest()">Finish Test</button>
+</div>
+
+<script>
+let questions=[
+ {q:"Full form of CPU?",o:["Central Process Unit","Central Processing Unit","Computer Personal Unit","Control Process Unit"],a:1},
+ {q:"Capital of J&K?",o:["Jammu","Srinagar","Both","None"],a:2},
+ {q:"2 + 2 × 3 = ?",o:["12","8","10","6"],a:1},
+ {q:"MS Word is used for?",o:["Drawing","Typing","Calculations","Mail"],a:1},
+ {q:"Shortcut key for Copy?",o:["Ctrl+X","Ctrl+C","Ctrl+V","Ctrl+Z"],a:1}
+];
+
+let i=0,ans=new Array(questions.length);
+
+function loadQ(){
+document.getElementById("qtext").innerHTML=`Q${i+1}. ${questions[i].q}`;
+let opt="";
+questions[i].o.forEach((v,idx)=>{
+opt+=`<label><input type="radio" name="opt" ${ans[i]==idx?"checked":""}
+onclick="ans[${i}]=${idx}"> ${v}</label>`;
+});
+document.getElementById("options").innerHTML=opt;
+}
+
+function nextQ(){ if(i<questions.length-1){i++;loadQ();}}
+function prevQ(){ if(i>0){i--;loadQ();}}
+
+function finishTest(){
+let score=0;
+ans.forEach((v,idx)=>{ if(v==questions[idx].a) score++; });
+alert("Your Score: "+score+" / "+questions.length);
+}
+
+loadQ();
+</script>
+
+</body>
+</html>
