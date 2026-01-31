@@ -1,50 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JKSSB High Level Mock - 80Q</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; margin: 0; padding: 0; }
+        #quiz-container { max-width: 600px; margin: 20px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: #2c3e50; color: #fff; padding: 20px; text-align: center; }
+        .timer { font-size: 20px; font-weight: bold; color: #e74c3c; }
+        .progress-bar { height: 8px; background: #eee; width: 100%; }
+        .progress-fill { height: 100%; background: #27ae60; width: 0%; transition: width 0.3s; }
+        .question-area { padding: 30px; min-height: 300px; }
+        .section-title { font-size: 12px; font-weight: bold; color: #7f8c8d; text-transform: uppercase; margin-bottom: 10px; }
+        .question-text { font-size: 18px; font-weight: 600; color: #2c3e50; margin-bottom: 20px; line-height: 1.4; }
+        .options-list { list-style: none; padding: 0; }
+        .option-item { border: 2px solid #ecf0f1; border-radius: 8px; margin-bottom: 12px; padding: 15px; cursor: pointer; transition: all 0.2s; font-weight: 500; display: flex; align-items: center; }
+        .option-item:hover { background: #f8f9fa; border-color: #bdc3c7; }
+        .option-item.selected { border-color: #3498db; background: #ebf5fb; color: #2980b9; }
+        .nav-buttons { display: flex; justify-content: space-between; padding: 20px; background: #fdfdfd; border-top: 1px solid #eee; }
+        .btn { padding: 12px 25px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-prev { background: #95a5a6; color: white; }
+        .btn-next { background: #3498db; color: white; }
+        .btn-submit { background: #27ae60; color: white; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        #result-screen { display: none; padding: 40px; text-align: center; }
+        .score-box { font-size: 48px; font-weight: bold; color: #2c3e50; margin: 20px 0; }
+        .review-btn { background: #34495e; color: #fff; width: 100%; padding: 15px; border-radius: 8px; border: none; font-size: 16px; margin-top: 20px; cursor: pointer; }
+        
+        .passage-box { background: #fef9e7; padding: 15px; border-left: 5px solid #f1c40f; margin-bottom: 20px; font-size: 14px; line-height: 1.6; color: #7d6608; border-radius: 4px; }
+    </style>
+</head>
+<body>
 
-let totalSeconds = 80 * 60; // 80 minutes for JA
+<div id="quiz-container">
+    <div class="header">
+        <div style="font-size: 14px; opacity: 0.8;">JKSSB JUNIOR ASSISTANT</div>
+        <div style="font-size: 20px; font-weight: bold;">Full Mock Test (Set 5)</div>
+        <div class="timer" id="timer">80:00</div>
+    </div>
+    
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
-setInterval(() => {
-  let m = Math.floor(totalSeconds / 60);
-  let s = totalSeconds % 60;
+    <div id="quiz-screen">
+        <div class="question-area">
+            <div id="section-label" class="section-title">General English</div>
+            <div id="passage-container"></div>
+            <div id="q-text" class="question-text">Loading question...</div>
+            <div id="options-container"></div>
+        </div>
 
-  document.getElementById("timer").innerHTML =
-    "Time Left: " +
-    String(m).padStart(2,'0') + ":" +
-    String(s).padStart(2,'0');
+        <div class="nav-buttons">
+            <button class="btn btn-prev" id="prev-btn" onclick="nav(-1)">Previous</button>
+            <button class="btn btn-next" id="next-btn" onclick="nav(1)">Next</button>
+        </div>
+    </div>
 
-  if (totalSeconds <= 0) finishTest();
-  totalSeconds--;
-}, 1000);
+    <div id="result-screen">
+        <h2>Mock Test Complete</h2>
+        <div class="score-box" id="score-text">0 / 80</div>
+        <p id="feedback-text"></p>
+        <button class="review-btn" onclick="location.reload()">Retake Mock Test</button>
+    </div>
+</div>
+
 <script>
-let questions=[
- {q:"Full form of CPU?",o:["Central Process Unit","Central Processing Unit","Computer Personal Unit","Control Process Unit"],a:1},
- {q:"Capital of J&K?",o:["Jammu","Srinagar","Both","None"],a:2},
- {q:"2 + 2 × 3 = ?",o:["12","8","10","6"],a:1},
- {q:"MS Word is used for?",o:["Drawing","Typing","Calculations","Mail"],a:1},
- {q:"Shortcut key for Copy?",o:["Ctrl+X","Ctrl+C","Ctrl+V","Ctrl+Z"],a:1}
-];
+    const questions = [
+        // ENGLISH - HIGH LEVEL
+        {
+            s: "General English",
+            p: "Read carefully: Come January 1, 2022, India will join a select group of countries limiting industrial trans fat to 2% by mass of the total oils/fats present in the product. India would thus be achieving the WHO target a year in advance. In mid-2016, the trans fat content limit was halved from 10% to 5%, and in December 2020, the FSSAI capped it to 3% by 2021.",
+            q: "According to the passage, by what year was the trans fat content capped to 3%?",
+            o: ["2016", "2020", "2021", "2022"],
+            a: 2,
+            e: "FSSAI capped it to 3% by 2021 as per the 2020 notification."
+        },
+        {
+            s: "General English",
+            q: "Identify the correct sentence regarding the use of 'Lest':",
+            o: ["Work hard lest you will fail.", "Work hard lest you should fail.", "Work hard lest you might fail.", "Work hard lest you may fail."],
+            a: 1,
+            e: "Lest is always followed by 'should'."
+        },
+        {
+            s: "General English",
+            q: "Fill in the blank with suitable Idiom: 'You better ___ while we are in the library, young lady!'",
+            o: ["hold your horses", "eat a horse", "hold your tongue", "mark my words"],
+            a: 2,
+            e: "Hold your tongue means to be silent."
+        },
+        {
+            s: "General English",
+            q: "Select the correctly punctuated sentence:",
+            o: ["He said, 'I am busy'.", "He said, 'I am busy.'", "He said 'I am busy.'", "He said 'I am busy'."],
+            a: 1,
+            e: "Punctuation must be inside the quotation marks."
+        },
+        {
+            s: "General English",
+            q: "Choose the synonym for 'Ephemeral':",
+            o: ["Eternal", "Transient", "Stable", "Fragile"],
+            a: 1,
+            e: "Ephemeral means lasting for a short time."
+        },
 
-let i=0,ans=new Array(questions.length);
+        // JK GK - HIGH LEVEL
+        {
+            s: "J&K GK",
+            q: "Which Section of the J&K Reorganisation Act, 2019 deals with the 'Formation of UT of Ladakh'?",
+            o: ["Section 2", "Section 3", "Section 4", "Section 5"],
+            a: 1,
+            e: "Section 3 establishes Ladakh; Section 4 establishes J&K UT."
+        },
+        {
+            s: "J&K GK",
+            q: "As per the 2019 Act, how many seats in the Legislative Assembly are reserved for areas under Pakistani occupation?",
+            o: ["20", "22", "24", "26"],
+            a: 2,
+            e: "24 seats remain vacant for the occupied territory."
+        },
+        {
+            s: "J&K GK",
+            q: "The Martand Sun Temple was built during the reign of which dynasty?",
+            o: ["Lohara", "Karkota", "Utpala", "Kushana"],
+            a: 1,
+            e: "Built by Lalitaditya Muktapida of the Karkota Dynasty."
+        },
+        {
+            s: "J&K GK",
+            q: "Which lake in J&K is famously known as the 'Deepest Lake' of India?",
+            o: ["Wular", "Dal", "Manasbal", "Mansar"],
+            a: 2,
+            e: "Manasbal is considered the deepest lake in the valley."
+        },
+        {
+            s: "J&K GK",
+            q: "The Treaty of Amritsar (1846) was signed between the British and whom?",
+            o: ["Maharaja Hari Singh", "Maharaja Gulab Singh", "Sheikh Abdullah", "Ranjit Singh"],
+            a: 1,
+            e: "Signed on 16th March 1846 with Gulab Singh."
+        },
 
-function loadQ(){
-document.getElementById("qtext").innerHTML=`Q${i+1}. ${questions[i].q}`;
-let opt="";
-questions[i].o.forEach((v,idx)=>{
-opt+=`<label><input type="radio" name="opt" ${ans[i]==idx?"checked":""}
-onclick="ans[${i}]=${idx}"> ${v}</label>`;
-});
-document.getElementById("options").innerHTML=opt;
-}
+        // NUMERICAL / REASONING
+        {
+            s: "Numerical & Reasoning",
+            q: "Find the missing number: 2, 5, 10, 17, 26, ?",
+            o: ["35", "37", "39", "41"],
+            a: 1,
+            e: "Pattern is n^2 + 1 (1^2+1, 2^2+1, etc. 6^2+1=37)."
+        },
+        {
+            s: "Numerical & Reasoning",
+            q: "If 'PEN' is coded as '16-5-14', how is 'DOG' coded?",
+            o: ["4-15-7", "4-14-7", "5-15-7", "4-15-8"],
+            a: 0,
+            e: "Direct alphabet positions (D=4, O=15, G=7)."
+        },
+        {
+            s: "Numerical & Reasoning",
+            q: "A man faces North, turns 45 degrees clockwise, then 180 degrees anti-clockwise. Which direction is he facing now?",
+            o: ["South-East", "North-West", "South-West", "North-East"],
+            a: 2,
+            e: "North + 45 CW = NE. NE + 180 ACW = SW."
+        },
+        {
+            s: "Numerical & Reasoning",
+            q: "If 1st January 2004 was a Thursday, what was 1st January 2005?",
+            o: ["Friday", "Saturday", "Sunday", "Monday"],
+            a: 1,
+            e: "2004 is a leap year, so we add 2 odd days. Thursday + 2 = Saturday."
+        },
+        {
+            s: "Numerical & Reasoning",
+            q: "Introducing a lady, a man says, 'Her mother is the only daughter of my mother-in-law.' How is the man related to the lady?",
+            o: ["Father", "Uncle", "Brother", "Husband"],
+            a: 0,
+            e: "Mother-in-law's only daughter is the man's wife. Wife's daughter is his daughter."
+        },
 
-function nextQ(){ if(i<questions.length-1){i++;loadQ();}}
-function prevQ(){ if(i>0){i--;loadQ();}}
+        // COMPUTERS - HIGH LEVEL
+        {
+            s: "Computers",
+            q: "In MS PowerPoint 2019, which shortcut key is used to show or hide the gridlines?",
+            o: ["Alt + F9", "Ctrl + F9", "Shift + F9", "Tab + F9"],
+            a: 2,
+            e: "Shift + F9 is the shortcut for grids in PPT."
+        },
+        {
+            s: "Computers",
+            q: "In MS Excel 2019, which of the following shortcut keys is used to bold the text of a selected cell?",
+            o: ["Ctrl + 4", "Ctrl + 3", "Ctrl + 2", "Ctrl + 1"],
+            a: 2,
+            e: "Ctrl + 2 is a legacy shortcut for Bold (Ctrl+B is primary)."
+        },
+        {
+            s: "Computers",
+            q: "Which program is loaded first at the start of a computer system?",
+            o: ["BIOS", "Operating System", "Application Software", "Device Drivers"],
+            a: 0,
+            e: "BIOS (Basic Input Output System) is the first to load."
+        },
+        {
+            s: "Computers",
+            q: "Which of the following is a macro-enabled file extension in MS Word 2019?",
+            o: [".docm", ".docx", ".dotx", ".docb"],
+            a: 0,
+            e: ".docm stands for Word Macro-Enabled Document."
+        },
+        {
+            s: "Computers",
+            q: "The full form of OSS in software distribution is:",
+            o: ["Open Source Software", "Original Source Software", "Open System Software", "Original System Service"],
+            a: 0,
+            e: "Open Source Software."
+        }
+    ];
 
-function finishTest(){
-let score=0;
-ans.forEach((v,idx)=>{ if(v==questions[idx].a) score++; });
-alert("Your Score: "+score+" / "+questions.length);
-}
+    // Duplicating to 80 for full mock experience logic
+    let fullQuestions = [...questions];
+    while(fullQuestions.length < 80) {
+        let rand = Math.floor(Math.random() * questions.length);
+        fullQuestions.push(questions[rand]);
+    }
 
-loadQ();
+    let currentIdx = 0;
+    let userAnswers = new Array(80).fill(null);
+    let timeRemaining = 80 * 60;
+
+    function renderQuestion() {
+        const q = fullQuestions[currentIdx];
+        document.getElementById('section-label').innerText = q.s;
+        document.getElementById('q-text').innerText = (currentIdx + 1) + ". " + q.q;
+        
+        const passageContainer = document.getElementById('passage-container');
+        if (q.p) {
+            passageContainer.innerHTML = `<div class="passage-box"><strong>Passage:</strong> ${q.p}</div>`;
+        } else {
+            passageContainer.innerHTML = '';
+        }
+
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+        
+        q.o.forEach((opt, i) => {
+            const div = document.createElement('div');
+            div.className = 'option-item' + (userAnswers[currentIdx] === i ? ' selected' : '');
+            div.innerHTML = `<span style="width:25px; font-weight:bold;">${String.fromCharCode(65 + i)}.</span> ${opt}`;
+            div.onclick = () => {
+                userAnswers[currentIdx] = i;
+                renderQuestion();
+            };
+            optionsContainer.appendChild(div);
+        });
+
+        const progress = ((currentIdx + 1) / 80) * 100;
+        document.getElementById('progress-fill').style.width = progress + '%';
+
+        document.getElementById('prev-btn').disabled = currentIdx === 0;
+        document.getElementById('next-btn').innerText = currentIdx === 79 ? 'Submit Mock' : 'Next';
+    }
+
+    function nav(dir) {
+        if (dir === 1 && currentIdx === 79) {
+            submitQuiz();
+            return;
+        }
+        currentIdx += dir;
+        renderQuestion();
+    }
+
+    function submitQuiz() {
+        clearInterval(timerInterval);
+        let score = 0;
+        userAnswers.forEach((ans, i) => {
+            if (ans === fullQuestions[i].a) score++;
+        });
+
+        document.getElementById('quiz-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('score-text').innerText = score + " / 80";
+        
+        const feedback = document.getElementById('feedback-text');
+        if (score > 65) feedback.innerText = "Excellent! You are ready for the exam.";
+        else if (score > 40) feedback.innerText = "Good effort. Focus more on J&K Reorganisation Act.";
+        else feedback.innerText = "Needs more revision. Study the 2022 papers carefully.";
+    }
+
+    const timerInterval = setInterval(() => {
+        timeRemaining--;
+        const mins = Math.floor(timeRemaining / 60);
+        const secs = timeRemaining % 60;
+        document.getElementById('timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        if (timeRemaining <= 0) submitQuiz();
+    }, 1000);
+
+    renderQuestion();
 </script>
 
 </body>
 </html>
+
